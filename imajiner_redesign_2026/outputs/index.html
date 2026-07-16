@@ -1,0 +1,968 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Imajiner membantu bisnis membuat website custom yang profesional, cepat, dan mudah dikelola."
+    />
+    <title>Imajiner — Buat Website yang Bagus Jadi Mudah</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Manrope:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/home.css" />
+    <style>
+      :root {
+        --ink: #ecf7f5;
+        --muted: rgba(226, 239, 237, 0.66);
+        --teal: #87cbd0;
+        --teal-deep: #5da7ad;
+        --night: #071012;
+        --line: rgba(232, 244, 242, 0.22);
+        --ease: cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-width: 320px;
+        color: var(--ink);
+        background: var(--night);
+        font-family: "DM Sans", Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      button {
+        color: inherit;
+        font: inherit;
+      }
+
+      .hero {
+        position: relative;
+        isolation: isolate;
+        min-height: 100svh;
+        overflow: hidden;
+        background: #071012;
+      }
+
+      .hero__scene,
+      .hero__shade,
+      .hero__grain {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+      }
+
+      .hero__scene {
+        z-index: -4;
+        background-image: url("../resources/images/hero-imajiner-studio.png");
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+        transform: scale(1.025);
+        animation: scene-in 1.8s var(--ease) both;
+      }
+
+      .hero__shade {
+        z-index: -3;
+        background:
+          linear-gradient(
+            90deg,
+            rgba(4, 12, 14, 0.93) 0%,
+            rgba(5, 15, 17, 0.76) 28%,
+            rgba(6, 17, 19, 0.16) 58%,
+            rgba(3, 9, 10, 0.12) 100%
+          ),
+          linear-gradient(
+            180deg,
+            rgba(3, 10, 11, 0.54) 0%,
+            transparent 22%,
+            transparent 70%,
+            rgba(2, 7, 8, 0.7) 100%
+          );
+      }
+
+      .hero__grain {
+        z-index: 10;
+        opacity: 0.12;
+        mix-blend-mode: soft-light;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.52'/%3E%3C/svg%3E");
+      }
+
+      .shell {
+        width: min(100% - clamp(40px, 9vw, 152px), 1510px);
+        margin-inline: auto;
+      }
+
+      .nav {
+        position: relative;
+        z-index: 20;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: clamp(90px, 9vw, 124px);
+        animation: reveal-down 1s var(--ease) 0.05s both;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        flex: 0 0 auto;
+      }
+
+      .brand img {
+        display: block;
+        width: clamp(112px, 9.6vw, 150px);
+        height: auto;
+      }
+
+      .nav__links {
+        display: flex;
+        align-items: center;
+        gap: clamp(26px, 3.3vw, 56px);
+        margin-left: auto;
+        font-size: 15px;
+        font-weight: 400;
+        letter-spacing: -0.015em;
+      }
+
+      .nav__link {
+        position: relative;
+        color: rgba(244, 249, 248, 0.88);
+        transition: color 0.3s ease;
+      }
+
+      .nav__link::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 100%;
+        bottom: -7px;
+        height: 1px;
+        background: var(--teal);
+        transition: right 0.45s var(--ease);
+      }
+
+      .nav__link:hover {
+        color: #fff;
+      }
+      .nav__link:hover::after {
+        right: 0;
+      }
+
+      .nav__link--dropdown {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+      }
+
+      .nav__link--dropdown svg {
+        width: 11px;
+        transition: transform 0.3s var(--ease);
+      }
+      .nav__link--dropdown:hover svg {
+        transform: translateY(2px);
+      }
+
+      .nav__cta {
+        margin-left: clamp(26px, 3vw, 48px);
+        padding: 11px 23px 12px;
+        border: 1px solid rgba(236, 247, 245, 0.63);
+        border-radius: 99px;
+        font-size: 15px;
+        transition:
+          color 0.35s ease,
+          background 0.35s ease,
+          border-color 0.35s ease,
+          transform 0.35s var(--ease);
+      }
+
+      .nav__cta:hover {
+        color: #071012;
+        background: var(--ink);
+        border-color: var(--ink);
+        transform: translateY(-2px);
+      }
+
+      .nav__toggle {
+        display: none;
+        width: 43px;
+        height: 43px;
+        padding: 0;
+        border: 1px solid var(--line);
+        border-radius: 50%;
+        background: rgba(5, 14, 16, 0.3);
+        cursor: pointer;
+      }
+
+      .nav__toggle span,
+      .nav__toggle::before,
+      .nav__toggle::after {
+        content: "";
+        display: block;
+        width: 17px;
+        height: 1px;
+        margin: 4px auto;
+        background: currentColor;
+        transition:
+          transform 0.35s var(--ease),
+          opacity 0.25s ease;
+      }
+
+      .nav__toggle[aria-expanded="true"] span {
+        opacity: 0;
+      }
+      .nav__toggle[aria-expanded="true"]::before {
+        transform: translateY(5px) rotate(45deg);
+      }
+      .nav__toggle[aria-expanded="true"]::after {
+        transform: translateY(-5px) rotate(-45deg);
+      }
+
+      .hero__content {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        min-height: calc(100svh - clamp(90px, 9vw, 124px));
+        flex-direction: column;
+        justify-content: center;
+        padding: clamp(38px, 5vh, 64px) 0 clamp(130px, 16vh, 175px);
+      }
+
+      .hero__copy {
+        width: min(47vw, 660px);
+      }
+
+      .eyebrow {
+        margin: 0 0 clamp(24px, 3.2vh, 36px);
+        color: var(--teal);
+        font-family: "Manrope", sans-serif;
+        font-size: clamp(11px, 0.82vw, 14px);
+        font-weight: 500;
+        letter-spacing: 0.46em;
+        text-transform: uppercase;
+        animation: reveal-up 0.9s var(--ease) 0.18s both;
+      }
+
+      h1 {
+        max-width: 680px;
+        margin: 0;
+        color: #e9f4f3;
+        font-family: "Manrope", sans-serif;
+        font-size: clamp(55px, 6.05vw, 104px);
+        font-weight: 300;
+        letter-spacing: -0.065em;
+        line-height: 0.93;
+      }
+
+      h1 span {
+        display: block;
+        animation: reveal-line 1.05s var(--ease) both;
+      }
+
+      h1 span:nth-child(1) {
+        animation-delay: 0.24s;
+      }
+      h1 span:nth-child(2) {
+        color: #b8dddc;
+        animation-delay: 0.33s;
+      }
+      h1 span:nth-child(3) {
+        animation-delay: 0.42s;
+      }
+
+      .hero__description {
+        max-width: 400px;
+        margin: clamp(26px, 3.6vh, 42px) 0 0;
+        color: var(--muted);
+        font-size: clamp(17px, 1.3vw, 22px);
+        font-weight: 300;
+        letter-spacing: -0.025em;
+        line-height: 1.55;
+        animation: reveal-up 1s var(--ease) 0.54s both;
+      }
+
+      .hero__actions {
+        display: flex;
+        align-items: center;
+        gap: clamp(30px, 3.5vw, 58px);
+        margin-top: clamp(34px, 4.5vh, 50px);
+        animation: reveal-up 1s var(--ease) 0.64s both;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 56px;
+        border-radius: 999px;
+        font-size: 16px;
+        font-weight: 500;
+        transition:
+          transform 0.35s var(--ease),
+          background 0.35s ease,
+          box-shadow 0.35s ease;
+      }
+
+      .button--primary {
+        min-width: 180px;
+        padding: 15px 28px;
+        color: #061113;
+        background: linear-gradient(135deg, #96d8db, #65abb1);
+        box-shadow: 0 12px 32px rgba(70, 150, 158, 0.2);
+      }
+
+      .button--primary:hover {
+        transform: translateY(-3px);
+        background: linear-gradient(135deg, #ace5e6, #78bbc0);
+        box-shadow: 0 16px 38px rgba(70, 150, 158, 0.34);
+      }
+
+      .button--text {
+        position: relative;
+        gap: 14px;
+        min-height: 42px;
+        border-radius: 0;
+      }
+
+      .button--text::after {
+        content: "";
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        height: 1px;
+        background: rgba(238, 247, 246, 0.44);
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 0.45s var(--ease);
+      }
+
+      .button--text:hover::after {
+        transform: scaleX(1);
+        transform-origin: left;
+      }
+      .button--text svg {
+        width: 25px;
+        transition: transform 0.4s var(--ease);
+      }
+      .button--text:hover svg {
+        transform: translateX(5px);
+      }
+
+      .proof {
+        position: absolute;
+        z-index: 3;
+        right: 0;
+        bottom: clamp(28px, 5vh, 54px);
+        left: 0;
+        animation: reveal-up 1s var(--ease) 0.76s both;
+      }
+
+      .proof__row {
+        display: flex;
+        align-items: center;
+        width: min(52%, 680px);
+        color: rgba(233, 243, 242, 0.72);
+      }
+
+      .proof__item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 0 clamp(22px, 2.2vw, 36px);
+        font-size: clamp(12px, 0.95vw, 15px);
+        white-space: nowrap;
+      }
+
+      .proof__item:first-child {
+        padding-left: 0;
+      }
+      .proof__item + .proof__item {
+        border-left: 1px solid var(--line);
+      }
+      .proof__item svg {
+        width: 25px;
+        height: 25px;
+        color: rgba(236, 247, 245, 0.8);
+        stroke-width: 1.35;
+      }
+
+      @keyframes scene-in {
+        from {
+          opacity: 0;
+          transform: scale(1.08);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1.025);
+        }
+      }
+
+      @keyframes reveal-down {
+        from {
+          opacity: 0;
+          transform: translateY(-18px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes reveal-up {
+        from {
+          opacity: 0;
+          transform: translateY(22px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes reveal-line {
+        from {
+          opacity: 0;
+          transform: translateY(0.7em);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 1080px) {
+        .nav__links {
+          gap: 25px;
+        }
+        .nav__links .nav__link:nth-last-child(-n + 2) {
+          display: none;
+        }
+        .hero__copy {
+          width: min(54vw, 590px);
+        }
+        h1 {
+          font-size: clamp(54px, 7vw, 78px);
+        }
+        .proof__row {
+          width: auto;
+        }
+      }
+
+      @media (max-width: 760px) {
+        .shell {
+          width: min(100% - 38px, 680px);
+        }
+        .hero {
+          min-height: 790px;
+        }
+
+        .hero__scene {
+          background-position: 61% center;
+          transform: scale(1.02);
+        }
+
+        .hero__shade {
+          background:
+            linear-gradient(
+              180deg,
+              rgba(4, 12, 14, 0.67) 0%,
+              rgba(4, 12, 14, 0.32) 24%,
+              rgba(4, 12, 14, 0.81) 52%,
+              #061012 81%
+            ),
+            linear-gradient(90deg, rgba(4, 12, 14, 0.74), transparent 80%);
+        }
+
+        .nav {
+          height: 86px;
+        }
+        .brand img {
+          width: 116px;
+        }
+        .nav__toggle {
+          display: block;
+        }
+
+        .nav__links {
+          position: absolute;
+          top: 72px;
+          right: 0;
+          display: grid;
+          width: min(300px, calc(100vw - 38px));
+          gap: 0;
+          padding: 10px;
+          border: 1px solid rgba(236, 247, 245, 0.13);
+          border-radius: 20px;
+          background: rgba(5, 14, 16, 0.95);
+          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+          opacity: 0;
+          visibility: hidden;
+          transform: translateY(-10px) scale(0.98);
+          transform-origin: top right;
+          transition:
+            opacity 0.3s ease,
+            visibility 0.3s ease,
+            transform 0.45s var(--ease);
+          backdrop-filter: blur(18px);
+        }
+
+        .nav__links.is-open {
+          opacity: 1;
+          visibility: visible;
+          transform: none;
+        }
+        .nav__links .nav__link:nth-last-child(-n + 2) {
+          display: block;
+        }
+        .nav__link {
+          padding: 13px 15px;
+        }
+        .nav__link::after {
+          display: none;
+        }
+        .nav__cta {
+          display: none;
+        }
+
+        .hero__content {
+          min-height: calc(100svh - 86px);
+          justify-content: flex-end;
+          padding: clamp(185px, 25vh, 220px) 0 105px;
+        }
+
+        .hero__copy {
+          width: 100%;
+        }
+        .eyebrow {
+          margin-bottom: 19px;
+          font-size: 10px;
+          letter-spacing: 0.36em;
+        }
+        h1 {
+          max-width: 560px;
+          font-size: clamp(46px, 12.5vw, 66px);
+          line-height: 0.94;
+        }
+        .hero__description {
+          max-width: 360px;
+          margin-top: 23px;
+          font-size: 16px;
+          line-height: 1.5;
+        }
+        .hero__actions {
+          gap: 25px;
+          margin-top: 29px;
+        }
+        .button {
+          min-height: 50px;
+          font-size: 14px;
+        }
+        .button--primary {
+          min-width: 146px;
+          padding: 12px 22px;
+        }
+        .proof {
+          bottom: 30px;
+        }
+        .proof__row {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 11px;
+        }
+        .proof__item {
+          flex-direction: column;
+          gap: 8px;
+          padding: 0 6px;
+          text-align: center;
+          white-space: normal;
+          line-height: 1.2;
+        }
+        .proof__item:first-child {
+          padding-left: 6px;
+        }
+        .proof__item svg {
+          width: 22px;
+          height: 22px;
+        }
+      }
+
+      @media (max-width: 430px) {
+        .hero {
+          min-height: 760px;
+        }
+        .hero__scene {
+          background-position: 64% top;
+          background-size: auto 62%;
+        }
+        .hero__content {
+          padding-top: 190px;
+          padding-bottom: 98px;
+        }
+        h1 {
+          font-size: clamp(44px, 12.5vw, 54px);
+        }
+        .hero__actions {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 14px;
+        }
+        .button--text {
+          margin-left: 6px;
+        }
+        .proof__item {
+          font-size: 10px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-delay: 0ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero__scene" aria-hidden="true"></div>
+        <div class="hero__shade" aria-hidden="true"></div>
+
+        <header class="nav shell">
+          <a class="brand" href="#" aria-label="Imajiner — Beranda">
+            <img
+              src="../resources/images/Logo%20Imajiner%20-%20White.png"
+              alt="Imajiner"
+              width="4518"
+              height="909"
+            />
+          </a>
+
+          <nav class="nav__links" id="primary-nav" aria-label="Navigasi utama">
+            <a class="nav__link nav__link--dropdown" href="#layanan">
+              Layanan
+              <svg viewBox="0 0 12 8" aria-hidden="true">
+                <path
+                  d="m1 1.5 5 5 5-5"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </a>
+            <a class="nav__link" href="#portofolio">Portofolio</a>
+            <a class="nav__link" href="#tentang">Tentang</a>
+            <a class="nav__link" href="#proses">Proses</a>
+            <a class="nav__link" href="#insights">Insights</a>
+          </nav>
+
+          <a
+            class="nav__cta"
+            href="https://wa.me/6285219798588"
+            aria-label="Konsultasi lewat WhatsApp"
+            >Konsultasi</a
+          >
+          <button
+            class="nav__toggle"
+            type="button"
+            aria-controls="primary-nav"
+            aria-expanded="false"
+            aria-label="Buka menu"
+          >
+            <span></span>
+          </button>
+        </header>
+
+        <div class="hero__content shell">
+          <div class="hero__copy">
+            <p class="eyebrow">Web design agency</p>
+            <h1 id="hero-title">
+              <span>buat website</span>
+              <span>yang bagus</span>
+              <span>jadi mudah</span>
+            </h1>
+            <p class="hero__description">
+              Desain, development, dan support untuk bisnis yang ingin tampil
+              lebih profesional.
+            </p>
+            <div class="hero__actions">
+              <a
+                class="button button--primary"
+                href="https://wa.me/6285219798588"
+                >Konsultasi</a
+              >
+              <a class="button button--text" href="#portofolio">
+                Lihat Portofolio
+                <svg viewBox="0 0 27 14" aria-hidden="true">
+                  <path
+                    d="M0 7h25M19 1l6 6-6 6"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="proof">
+          <div class="proof__row shell" aria-label="Keunggulan Imajiner">
+            <div class="proof__item">
+              <svg viewBox="0 0 32 32" aria-hidden="true">
+                <path
+                  d="m16 2 3.2 4.2 5.2-.2.8 5.1 4.4 2.8-2 4.8 2 4.8-4.4 2.8-.8 5.1-5.2-.2L16 30l-3.2-4.2-5.2.2-.8-5.1-4.4-2.8 2-4.8-2-4.8 4.4-2.8.8-5.1 5.2.2L16 2Z"
+                  fill="none"
+                  stroke="currentColor"
+                />
+                <path
+                  d="m11.5 16 3 3 6-6"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              <span>Desain Berkelas</span>
+            </div>
+            <div class="proof__item">
+              <svg viewBox="0 0 32 32" aria-hidden="true">
+                <path
+                  d="M3 22a13 13 0 1 1 26 0M16 7v3M7.5 10.5l2 2M24.5 10.5l-2 2M5 21h3M24 21h3M16 21l6-7"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                />
+                <circle
+                  cx="16"
+                  cy="21"
+                  r="2"
+                  fill="none"
+                  stroke="currentColor"
+                />
+              </svg>
+              <span>Performa Optimal</span>
+            </div>
+            <div class="proof__item">
+              <svg viewBox="0 0 32 32" aria-hidden="true">
+                <path
+                  d="M5 6h22a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3h-8l-5 4v-4H5a3 3 0 0 1-3-3V9a3 3 0 0 1 3-3Z"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M11 15h10M11 19h6"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                />
+              </svg>
+              <span>Support Terpercaya</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero__grain" aria-hidden="true"></div>
+      </section>
+
+      <section class="help" aria-labelledby="help-heading">
+        <header class="help__intro shell">
+          <div class="help__intro-grid">
+            <div>
+              <p class="eyebrow">Dari ide menjadi nyata</p>
+              <h2 class="help__heading" id="help-heading">
+                Imajiner<br /><span>membantu Anda</span>
+              </h2>
+            </div>
+            <p class="help__lead">
+              Kami mengubah kompleksitas membangun website menjadi proses yang
+              jelas, terarah, dan terasa ringan.
+            </p>
+          </div>
+        </header>
+
+        <div class="stories">
+          <article class="story shell" id="idea" data-story>
+            <div class="story__copy">
+              <div class="story__number">01</div>
+              <p class="story__kicker">Berawal dari visi Anda</p>
+              <h3 class="story__title">Mewujudkan <em>Ide</em></h3>
+              <p class="story__body">
+                Kami mendengarkan tujuan, cerita, dan ambisi bisnis Anda—lalu
+                menerjemahkannya menjadi konsep digital yang jelas dan siap
+                diwujudkan.
+              </p>
+              <div class="story__meta" aria-label="Tahapan mewujudkan ide">
+                <span>Listen</span>
+                <span>Define</span>
+                <span>Shape</span>
+              </div>
+            </div>
+
+            <div class="story__media">
+              <figure class="visual visual--idea">
+                <img
+                  class="visual__image"
+                  src="../../resources/images/imajiner-idea.png"
+                  alt="Struktur arsitektural yang terbentuk dari garis cahaya, melambangkan ide menjadi nyata"
+                  width="1448"
+                  height="1086"
+                />
+                <div class="visual__wash" aria-hidden="true"></div>
+                <div class="visual__corners" aria-hidden="true"></div>
+                <div class="visual__trace" aria-hidden="true"></div>
+                <figcaption class="visual__label">Concept forming</figcaption>
+              </figure>
+            </div>
+            <span class="story__ghost" aria-hidden="true">01</span>
+          </article>
+
+          <article class="story story--reverse shell" id="standout" data-story>
+            <div class="story__copy">
+              <div class="story__number">02</div>
+              <p class="story__kicker">Tidak dibuat untuk menyatu</p>
+              <h3 class="story__title">
+                Menghasilkan Desain yang <em>Standout</em>
+              </h3>
+              <p class="story__body">
+                Setiap desain dibuat custom untuk menonjolkan karakter bisnis
+                Anda—bukan template generik yang terlihat sama dengan semua
+                kompetitor.
+              </p>
+              <div class="story__meta" aria-label="Karakter desain standout">
+                <span>Custom</span>
+                <span>Distinctive</span>
+                <span>Purposeful</span>
+              </div>
+            </div>
+
+            <div class="story__media">
+              <figure class="visual visual--standout">
+                <img
+                  class="visual__image"
+                  src="../../resources/images/imajiner-standout.png"
+                  alt="Monolit kaca bercahaya yang tampil berbeda di antara bentuk gelap, melambangkan desain standout"
+                  width="1448"
+                  height="1086"
+                />
+                <div class="visual__wash" aria-hidden="true"></div>
+                <div class="visual__corners" aria-hidden="true"></div>
+                <div class="visual__scan" aria-hidden="true"></div>
+                <figcaption class="visual__label">
+                  Built to stand apart
+                </figcaption>
+              </figure>
+            </div>
+            <span class="story__ghost" aria-hidden="true">02</span>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      const toggle = document.querySelector(".nav__toggle");
+      const nav = document.querySelector(".nav__links");
+
+      toggle.addEventListener("click", () => {
+        const isOpen = toggle.getAttribute("aria-expanded") === "true";
+        toggle.setAttribute("aria-expanded", String(!isOpen));
+        toggle.setAttribute("aria-label", isOpen ? "Buka menu" : "Tutup menu");
+        nav.classList.toggle("is-open", !isOpen);
+      });
+
+      nav.addEventListener("click", (event) => {
+        if (event.target.closest("a")) {
+          toggle.setAttribute("aria-expanded", "false");
+          toggle.setAttribute("aria-label", "Buka menu");
+          nav.classList.remove("is-open");
+        }
+      });
+
+      const stories = document.querySelectorAll("[data-story]");
+      const reduceMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)",
+      ).matches;
+
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) entry.target.classList.add("is-visible");
+          });
+        },
+        { threshold: 0.16 },
+      );
+
+      const revealVisibleStories = () => {
+        stories.forEach((story) => {
+          const box = story.getBoundingClientRect();
+          if (box.top < window.innerHeight * 0.92 && box.bottom > 0) {
+            story.classList.add("is-visible");
+          }
+        });
+      };
+
+      stories.forEach((story) => revealObserver.observe(story));
+      window.addEventListener("load", revealVisibleStories);
+      window.addEventListener("scroll", revealVisibleStories, {
+        passive: true,
+      });
+      revealVisibleStories();
+
+      if (!reduceMotion) {
+        let ticking = false;
+
+        const updateParallax = () => {
+          const viewportCenter = window.innerHeight / 2;
+
+          stories.forEach((story) => {
+            const box = story.getBoundingClientRect();
+            const distance = box.top + box.height / 2 - viewportCenter;
+            const movement = Math.max(-38, Math.min(38, distance * -0.055));
+            story.style.setProperty("--parallax", movement.toFixed(2));
+          });
+
+          ticking = false;
+        };
+
+        window.addEventListener(
+          "scroll",
+          () => {
+            if (!ticking) {
+              requestAnimationFrame(updateParallax);
+              ticking = true;
+            }
+          },
+          { passive: true },
+        );
+
+        updateParallax();
+      }
+    </script>
+  </body>
+</html>
